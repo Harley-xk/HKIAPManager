@@ -236,7 +236,7 @@ extern void HKIAPLogContent(NSString *string);
 - (void)transactionFailed:(SKPaymentTransaction *)transaction
 {
     NSError *error = transaction.error;
-    HKIAPLOG(@"原因：%@",error.localizedDescription);
+    HKIAPLOG(@"Error：%@",error.localizedDescription);
     
     HKIAPResponse *response = [HKIAPResponse responseWithError:error];
     
@@ -267,9 +267,9 @@ extern void HKIAPLogContent(NSString *string);
         for(SKProduct *product in products){
             HKIAPLOG(@"--- 商品信息 ---");
             HKIAPLOG(@"ID：%@",product.productIdentifier);
-            HKIAPLOG(@"描述：%@",product.localizedDescription);
             HKIAPLOG(@"标题：%@",product.localizedTitle);
             HKIAPLOG(@"价格：%@",product.price);
+            HKIAPLOG(@"描述：%@",product.localizedDescription);
             HKIAPLOG(@"对象信息：%@", [product description]);
             
             [self addStoreItemWithProduct:product];
@@ -289,7 +289,7 @@ extern void HKIAPLogContent(NSString *string);
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error
 {
     HKIAPLOG(@"-------商品更新失败----------");
-    HKIAPLOG(@"原因：%@",error);
+    HKIAPLOG(@"Error：%@",error);
     
     if (self.updateHandler) {
         self.updateHandler([HKIAPResponse responseWithError:error]);
@@ -302,6 +302,6 @@ extern void HKIAPLogContent(NSString *string);
 
 void HKIAPLogContent(NSString *content)
 {
-    fprintf(stderr, "%s",[content UTF8String]);
+    fprintf(stderr, "%s\n",[content UTF8String]);
 }
 

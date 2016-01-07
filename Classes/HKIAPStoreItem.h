@@ -21,6 +21,8 @@
  */
 - (NSString *)identifier;
 
+- (NSString *)localizedPrice;
+
 /**
  *  是否已购买此内购商品
  */

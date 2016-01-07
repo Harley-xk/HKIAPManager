@@ -15,4 +15,14 @@
     return self.product.productIdentifier;
 }
 
+- (NSString *)localizedPrice
+{
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setFormatterBehavior:NSNumberFormatterBehaviorDefault];
+    [numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [numberFormatter setLocale:self.product.priceLocale];
+    NSString *localizedString = [numberFormatter stringFromNumber:self.product.price];
+    return localizedString;
+}
+
 @end
