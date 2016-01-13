@@ -176,6 +176,7 @@ extern void HKIAPLogContent(NSString *string);
 // Sent when all transactions from the user's purchase history have successfully been added back to the queue.
 - (void)paymentQueueRestoreCompletedTransactionsFinished:(SKPaymentQueue *)queue
 {
+    NSMutableArray *restoredItems = [NSMutableArray array];
     for (SKPaymentTransaction *transaction in queue.transactions)
     {
         if (transaction.transactionState == SKPaymentTransactionStateRestored) {
@@ -183,13 +184,17 @@ extern void HKIAPLogContent(NSString *string);
             if ([productIdentifier length] > 0) {
                 HKIAPStoreItem *item = [self storeItemWithIdentifier:productIdentifier];
                 item.purchased = YES;
+                [restoredItems addObject:item];
             }
             // Remove the transaction from the payment queue.
             [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
         }
     }
-    if (self.restoreHandler) {
-        self.restoreHandler([HKIAPResponse succeedResponse]);
+    HKIAPResponse *response = [HKIAPResponse succeedResponse];
+    response.restoredItems = [NSArray arrayWithArray:restoredItems];
+
+    if (self.restoreHandler) {        
+        self.restoreHandler(response);
         self.restoreHandler = nil;
     }
 }
